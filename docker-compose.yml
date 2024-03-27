@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  client-backend:
+    image: client:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-db
+    environment:
+      - SERVER_PORT= 8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://service-db/wallet_db
+
+  service-db:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "--quiet" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    image: postgres:16.0-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    restart: unless-stopped

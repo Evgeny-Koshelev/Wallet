@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-wallet
+      author: e.koshelev
+      changes:
+        - createTable:
+            tableName: wallet
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValue: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: decimal(16,2)
+                  constraints:
+                    nullable: false

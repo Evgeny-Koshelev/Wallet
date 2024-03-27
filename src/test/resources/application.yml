@@ -1,0 +1,15 @@
+spring:
+
+  datasource:
+    username: test
+    password: test
+    pool    :
+      enabled: true
+
+  liquibase:
+    change-log      : classpath:/db/changelog/db.changelog-master.yaml
+    enabled         : true
+    default-schema  : public
+    liquibase-schema: public
+    user            : test
+    password        : test
