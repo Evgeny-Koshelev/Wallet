@@ -22,3 +22,4 @@ databaseChangeLog:
                   type: decimal(16,2)
                   constraints:
                     nullable: false
+                    check: balance > 0

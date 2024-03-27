@@ -7,6 +7,7 @@ import com.example.wallet.entities.Wallet;
 import com.example.wallet.enums.OperationTypes;
 import com.example.wallet.mapper.WalletMapper;
 import com.example.wallet.repositories.WalletRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class WalletService {
     private final WalletRepository walletRepository;
     private final WalletMapper walletMapper;
 
+    @Transactional
     public ChangeWalletDto changeBalance(ChangeBalanceDto changeBalanceDto) {
         WalletDto walletDto = getBalance(changeBalanceDto.getWalletId());
         if(walletDto.getId() != null) {
@@ -39,7 +41,7 @@ public class WalletService {
             }
             BigDecimal result = walletDto.getBalance().add(amount);
             if(result.compareTo(BigDecimal.ZERO) > 0) {
-                walletRepository.save(new Wallet(walletDto.getId(),walletDto.getUserId(),result));
+                walletRepository.changeBalance(walletDto.getId(),result);
                 return new ChangeWalletDto("Success. " + message);
             }
             else
@@ -57,15 +59,6 @@ public class WalletService {
                 new WalletDto(null, null, null);
     }
 
-    public ChangeWalletDto stressTest(ChangeBalanceDto changeBalanceDto) {
-
-        for(int i = 0; i < 1000; i++) {
-            changeBalance(new  ChangeBalanceDto(UUID.fromString("cd5f8a74-b3a6-4c7a-9ef2-5cc5c76c33de"),
-                    OperationTypes.DEPOSIT,
-                    BigDecimal.valueOf(10.00)));
-        }
-        return new ChangeWalletDto("OK");
-    }
 }
 
 

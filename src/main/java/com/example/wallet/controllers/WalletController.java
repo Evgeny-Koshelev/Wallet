@@ -23,7 +23,6 @@ public class WalletController {
     @PostMapping("/wallet")
     public ResponseEntity<ChangeWalletDto> changeBalance(@RequestBody @Validated ChangeBalanceDto changeBalanceDto) {
         return ResponseEntity.status(HttpStatus.OK).body(walletService.changeBalance(changeBalanceDto));
-       // return ResponseEntity.status(HttpStatus.OK).body(walletService.stressTest(changeBalanceDto));
     }
 
 
